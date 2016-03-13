@@ -30,6 +30,23 @@
         <item>-1</item>
     </string-array>
 
+
+    <string-array name="pref_temperature_units">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+    <string-array name="pref_temperature_units_values">
+        <item>Metric</item>
+        <item>Imperial</item>
+    </string-array>
+
+    <string name="pref_location_default" translatable="false">503550</string>
+    <string name="pref_location_key" translatable="false">location</string>
+    <string name="pref_location_label" translatable="false">Location</string>
+    <string name="pref_temperature_unit" translatable="false">temperature_unit</string>
+    <string name="pref_temperature_unit_default" translatable="false">Metric</string>
+    <string name="pref_units_imperail" translatable="false">Imperial</string>
+    <string name="pref_units_metric" translatable="false">Metric</string>
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
 
@@ -63,7 +80,5 @@
 
     <string name="pref_title_vibrate">Vibrate</string>
 
-    <string name="pref_location_default" translatable="false">503550</string>
-    <string name="pref_location_key" translatable="false">location</string>
-    <string name="pref_location_label" translatable="false">Location</string>
+
 </resources>

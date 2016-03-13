@@ -27,6 +27,19 @@
         android:inputType="text"
         android:singleLine="true"/>
 
+    <ListPreference
+        android:id="@+id/pref_temperatures"
+        android:title="Temperature unit"
+        android:entries="@array/pref_temperature_units"
+        android:entryValues="@array/pref_temperature_units_values"
+        android:dialogTitle="Select a temperature unit"
+        android:key="@string/pref_temperature_unit"
+        android:defaultValue="@string/pref_temperature_unit_default"
+        android:negativeButtonText="@null"
+        android:positiveButtonText="@null"
+
+        />
+
     <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
          dismiss it. -->
     <!-- NOTE: ListPreference's summary should be set to its value by the activity code. -->

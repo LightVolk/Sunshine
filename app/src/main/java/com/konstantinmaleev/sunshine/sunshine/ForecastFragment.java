@@ -60,6 +60,8 @@ public class ForecastFragment extends Fragment {
     updateWeather();
 }
 
+
+
     private void updateWeather()
     {
         FetchWeatherTask task=new FetchWeatherTask();
@@ -81,10 +83,7 @@ public class ForecastFragment extends Fragment {
 
         if(id==R.id.action_refresh)
         {
-
-
-
-           updateWeather();
+          updateWeather();
 
             ArrayList<String> weatherDataList = new ArrayList<>();
             mForecastAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast,
@@ -113,10 +112,6 @@ public class ForecastFragment extends Fragment {
 
 
         View rootView=inflater.inflate(R.layout.fragment_main,container,false);
-
-
-
-
 
        updateWeather();
             final ArrayList<String> weatherDataList=new ArrayList<>();
@@ -168,13 +163,21 @@ public class ForecastFragment extends Fragment {
     /**
      * Prepare the weather high/lows for presentation.
      */
-    private String formatHighLows(double high, double low) {
+    private String formatHighLows(double high, double low,boolean isMetric) {
         // For presentation, assume the user doesn't care about tenths of a degree.
         long roundedHigh = Math.round(high);
         long roundedLow = Math.round(low);
 
-        String highLowStr = roundedHigh + "/" + roundedLow;
-        return highLowStr;
+        if(isMetric) {
+            String highLowStr = roundedHigh +" C"+ "/" + roundedLow+" C";
+            return highLowStr;
+        }
+        else
+        {
+            String highLowStr = roundedHigh +" F"+ "/" + roundedLow+" F";
+            return highLowStr;
+        }
+
     }
 
     /**
@@ -245,7 +248,24 @@ public class ForecastFragment extends Fragment {
             double high = temperatureObject.getDouble(OWM_MAX);
             double low = temperatureObject.getDouble(OWM_MIN);
 
-            highAndLow = formatHighLows(high, low);
+           // SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
+           // String prefLoc= prefs.getString(getString(R.string.pref_location_key),
+           //         getString(R.string.pref_location_default));
+
+
+            SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String prefUnit= prefs.getString(getString(R.string.pref_temperature_unit),
+                    getString(R.string.pref_temperature_unit_default));
+
+            boolean isMetric=true;
+            if(prefUnit.equals(getString(R.string.pref_units_imperail)))//Imperial
+            {
+                high=high*1.8+32;
+                low=low*1.8+32;
+                isMetric=false;
+            }
+
+            highAndLow = formatHighLows(high, low,isMetric);
             resultStrs[i] = day + " - " + description + " - " + highAndLow;
         }
 
@@ -255,6 +275,8 @@ public class ForecastFragment extends Fragment {
         return resultStrs;
 
     }
+
+
 
 
 
