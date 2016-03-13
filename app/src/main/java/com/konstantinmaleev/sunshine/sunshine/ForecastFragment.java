@@ -32,7 +32,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.concurrent.ExecutionException;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -40,6 +39,7 @@ import java.util.concurrent.ExecutionException;
 public class ForecastFragment extends Fragment {
 
     private static final String LOG_TAG_FRAGMENT_FORECAST ="FORECAST_FRAGMENT" ;
+
 
     public ArrayAdapter<String>  mForecastAdapter;
 
@@ -54,6 +54,25 @@ public class ForecastFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);// сказать, что во фрагменте будут опции
     }
+@Override
+    public void onStart(){
+    super.onStart();
+    updateWeather();
+}
+
+    private void updateWeather()
+    {
+        FetchWeatherTask task=new FetchWeatherTask();
+
+        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String prefLoc= prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
+
+        if(prefLoc!=null&&prefLoc!="")
+            postCode=prefLoc;
+
+        task.execute(postCode);//,postCode);
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -63,33 +82,14 @@ public class ForecastFragment extends Fragment {
         if(id==R.id.action_refresh)
         {
 
-            FetchWeatherTask task=new FetchWeatherTask();
-
-            SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
-            String prefLoc= prefs.getString(getString(R.string.pref_location_key),
-                    getString(R.string.pref_location_default));
-
-            if(prefLoc!=null&&prefLoc!="")
-                postCode=prefLoc;
-
-            task.execute(postCode);//,postCode);
-            try {
-                ArrayList<String> weatherDataList=new ArrayList<>();
-                String[] result=task.get();
-
-                for (String weather:result
-                        ) {
-                    weatherDataList.add(weather);
-                }
 
 
-                mForecastAdapter =  new ArrayAdapter<String>(getActivity(),R.layout.list_item_forecast,
-                        R.id.list_item_forecast_textview,weatherDataList);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
+           updateWeather();
+
+            ArrayList<String> weatherDataList = new ArrayList<>();
+            mForecastAdapter = new ArrayAdapter<String>(getActivity(), R.layout.list_item_forecast,
+                    R.id.list_item_forecast_textview, weatherDataList);
+
 
             ////new URL("http://api.openweathermap.org/data/2.5/forecast/?q=94043&mode=json&units=metric&cnt=7&appid=f0682118246d818a86b3630a7e59556e");//
             //task.execute("http://api.openweathermap.org/data/2.5/forecast/daily?q=94043&mode=json&units=metric&cnt=7&appid=f0682118246d818a86b3630a7e59556e");
@@ -116,16 +116,9 @@ public class ForecastFragment extends Fragment {
 
 
 
-        FetchWeatherTask task=new FetchWeatherTask();
 
-        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
-        String prefLoc= prefs.getString(getString(R.string.pref_location_key),
-                getString(R.string.pref_location_default));
 
-        if(prefLoc!=null&&prefLoc!="")
-            postCode=prefLoc;
-
-        task.execute(postCode);//,postCode);
+       updateWeather();
             final ArrayList<String> weatherDataList=new ArrayList<>();
 
 
@@ -194,6 +187,8 @@ public class ForecastFragment extends Fragment {
     private String[] getWeatherDataFromJson(String forecastJsonStr, int numDays)
             throws JSONException {
 
+        if(forecastJsonStr==null||forecastJsonStr=="")
+            return  new String[]{};
         // These are the names of the JSON objects that need to be extracted.
         final String OWM_LIST = "list";
         final String OWM_WEATHER = "weather";
