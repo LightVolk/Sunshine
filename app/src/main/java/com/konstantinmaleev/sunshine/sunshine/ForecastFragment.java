@@ -2,9 +2,11 @@ package com.konstantinmaleev.sunshine.sunshine;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
@@ -63,6 +65,13 @@ public class ForecastFragment extends Fragment {
 
             FetchWeatherTask task=new FetchWeatherTask();
 
+            SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
+            String prefLoc= prefs.getString(getString(R.string.pref_location_key),
+                    getString(R.string.pref_location_default));
+
+            if(prefLoc!=null&&prefLoc!="")
+                postCode=prefLoc;
+
             task.execute(postCode);//,postCode);
             try {
                 ArrayList<String> weatherDataList=new ArrayList<>();
@@ -109,7 +118,12 @@ public class ForecastFragment extends Fragment {
 
         FetchWeatherTask task=new FetchWeatherTask();
 
+        SharedPreferences prefs= PreferenceManager.getDefaultSharedPreferences(getActivity());
+        String prefLoc= prefs.getString(getString(R.string.pref_location_key),
+                getString(R.string.pref_location_default));
 
+        if(prefLoc!=null&&prefLoc!="")
+            postCode=prefLoc;
 
         task.execute(postCode);//,postCode);
             final ArrayList<String> weatherDataList=new ArrayList<>();
