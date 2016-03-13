@@ -1,9 +1,11 @@
 package com.konstantinmaleev.sunshine.sunshine;
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.text.format.Time;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
@@ -109,7 +112,7 @@ public class ForecastFragment extends Fragment {
 
 
         task.execute(postCode);//,postCode);
-            ArrayList<String> weatherDataList=new ArrayList<>();
+            final ArrayList<String> weatherDataList=new ArrayList<>();
 
 
             mForecastAdapter =  new ArrayAdapter<String>(getActivity(),R.layout.list_item_forecast,
@@ -120,7 +123,27 @@ public class ForecastFragment extends Fragment {
 
         ListView lv =(ListView) rootView.findViewById(R.id.listView_forecast);
         lv.setAdapter(mForecastAdapter);
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 
+            @Override
+            public void onItemClick(AdapterView<?> adapterView,View view,int position,long l) {
+                Context context=view.getContext();
+
+                //Toast toast;
+                //toast = Toast.makeText(context, weatherDataList.get(i), (int) l);
+                //toast.show();
+
+                String forecast=mForecastAdapter.getItem(position);
+              //  Toast.makeText(getActivity(),forecast,Toast.LENGTH_SHORT).show();
+
+                Intent intent=new Intent(getActivity(),DetailActivity.class).putExtra(Intent.EXTRA_TEXT,forecast);
+                startActivity(intent);
+
+
+            }
+        }
+
+        );
         return rootView;
     }
 
