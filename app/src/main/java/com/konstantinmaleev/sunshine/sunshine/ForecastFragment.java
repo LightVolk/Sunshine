@@ -43,8 +43,8 @@ public class ForecastFragment extends Fragment {
 
     public ArrayAdapter<String>  mForecastAdapter;
 
-    public  String postCode="503550";//пятигорск
- //   public String postCode="468902";//ярославль
+    public  String cityName ="Pyatigorsk";//пятигорск
+ //   public String cityName="468902";//ярославль
     public ForecastFragment() {
     }
 
@@ -71,9 +71,9 @@ public class ForecastFragment extends Fragment {
                 getString(R.string.pref_location_default));
 
         if(prefLoc!=null&&prefLoc!="")
-            postCode=prefLoc;
+            cityName =prefLoc;
 
-        task.execute(postCode);//,postCode);
+        task.execute(cityName);//,cityName);
     }
 
     @Override
@@ -96,6 +96,7 @@ public class ForecastFragment extends Fragment {
 
             return  true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -304,7 +305,7 @@ public class ForecastFragment extends Fragment {
                 final String DAYS_PARAMS = "cnt";
 
                 android.net.Uri.Builder uriBuilder = Uri.parse(FORECAST_BASE_URL).buildUpon()
-                        .appendQueryParameter("id", params[0])
+                        .appendQueryParameter(QUEIRY_PARAM, params[0])
                         .appendQueryParameter("mode", "json")
                         .appendQueryParameter("units", "metric")
                         .appendQueryParameter("cnt", "7")

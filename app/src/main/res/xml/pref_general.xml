@@ -23,7 +23,7 @@
         android:id="@+id/pref_location"
         android:title="Location"
         android:key="location"
-        android:defaultValue="503550"
+        android:defaultValue="Pyatigorsk"
         android:inputType="text"
         android:singleLine="true"/>
 
@@ -39,6 +39,8 @@
         android:positiveButtonText="@null"
 
         />
+
+
 
     <!-- NOTE: Hide buttons to simplify the UI. Users can touch outside the dialog to
          dismiss it. -->
