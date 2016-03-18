@@ -47,6 +47,7 @@
     <string name="pref_temperature_unit_default" translatable="false">Metric</string>
     <string name="pref_units_imperail" translatable="false">Imperial</string>
     <string name="pref_units_metric" translatable="false">Metric</string>
+    <string name="action_share" translatable="false">Share</string>
     <!-- Example settings for Data & Sync -->
     <string name="pref_header_data_sync">Data &amp; sync</string>
 
